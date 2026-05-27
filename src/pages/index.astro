@@ -1,17 +1,960 @@
 ---
+import {
+    datasetDistribution,
+    keyMetrics,
+    notebookSummary,
+    regionInterest,
+    sentimentBreakdown,
+    topicPopularity,
+    trendSeries,
+    whoIndicators,
+    youtubeTopics,
+} from "../data/dummy-dashboard";
 
+const maxDistribution = Math.max(
+    ...datasetDistribution.map((item) => item.count),
+);
+const maxTopicScore = Math.max(...topicPopularity.map((item) => item.score));
+const maxRegionScore = Math.max(...regionInterest.map((item) => item.score));
+const maxEngagement = Math.max(...youtubeTopics.map((item) => item.engagement));
+const whoValues = whoIndicators.flatMap((indicator) =>
+    indicator.values.map((point) => point.value),
+);
+const whoMin = Math.min(...whoValues);
+const whoMax = Math.max(...whoValues);
+const trendKeys = [
+    { key: "lansia", label: "lansia", color: "var(--blue)" },
+    { key: "kesehatan", label: "kesehatan lansia", color: "var(--ink)" },
+    { key: "senam", label: "senam lansia", color: "var(--green)" },
+    { key: "posyandu", label: "posyandu lansia", color: "var(--red)" },
+] as const;
+const whoColors = ["var(--blue)", "var(--ink)", "var(--green)", "var(--red)"];
+
+function polyline(points: { value: number }[], min: number, max: number) {
+    return points
+        .map((point, index) => {
+            const x = 44 + (index / (points.length - 1)) * 500;
+            const y = 220 - ((point.value - min) / (max - min)) * 170;
+            return `${x},${y}`;
+        })
+        .join(" ");
+}
+
+function trendPolyline(key: (typeof trendKeys)[number]["key"]) {
+    return trendSeries
+        .map((point, index) => {
+            const x = 44 + (index / (trendSeries.length - 1)) * 500;
+            const y = 220 - ((point[key] - 10) / 85) * 170;
+            return `${x},${y}`;
+        })
+        .join(" ");
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <meta
+            name="description"
+            content="Dokumen dashboard publik kesehatan lansia Indonesia berbasis data dummy WHO, Google Trends, dan YouTube."
+        />
+        <title>Dokumen Dashboard Kesehatan Lansia Indonesia</title>
+    </head>
+    <body>
+        <header class="site-header">
+            <a href="#top" class="brand">SmartCaregiver</a>
+            <nav aria-label="Navigasi dokumen">
+                <a href="#ringkasan">Ringkasan</a>
+                <a href="#dataset">Dataset</a>
+                <a href="#tren">Tren</a>
+                <a href="#youtube">YouTube</a>
+                <a href="#metodologi">Metodologi</a>
+            </nav>
+        </header>
+
+        <main id="top" class="document">
+            <section class="cover section-block">
+                <h1>Dashboard Kesehatan Lansia Indonesia</h1>
+                <p class="lede">
+                    Ringkasan data WHO, Google Trends, dan YouTube untuk membaca
+                    sinyal awal kesehatan lansia Indonesia. Tampilan ini disusun
+                    seperti dokumen publik: ringkas, minimal, dan mudah
+                    dipindai.
+                </p>
+                <dl class="meta-grid">
+                    <div>
+                        <dt>Dataset</dt><dd>{notebookSummary.collection}</dd>
+                    </div>
+                    <div><dt>Periode</dt><dd>{keyMetrics.timerange}</dd></div>
+                    <div>
+                        <dt>Analisis</dt><dd>{notebookSummary.analysisRun}</dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section id="ringkasan" class="section-block">
+                <div class="section-title">
+                    <h2>Ringkasan eksekutif</h2>
+                </div>
+                <div class="metrics-grid">
+                    <article class="metric">
+                        <span>Total records</span><strong
+                            >{keyMetrics.totalRecords}</strong
+                        ><p>Record dummy gabungan.</p>
+                    </article>
+                    <article class="metric">
+                        <span>Unique keywords</span><strong
+                            >{keyMetrics.uniqueKeywords}</strong
+                        ><p>Keyword lintas sumber.</p>
+                    </article>
+                    <article class="metric">
+                        <span>Top keyword</span><strong class="text-value"
+                            >{keyMetrics.topKeyword}</strong
+                        ><p>Frekuensi tertinggi.</p>
+                    </article>
+                    <article class="metric">
+                        <span>Sentimen YouTube</span><strong
+                            >{keyMetrics.averageSentiment}</strong
+                        ><p>Proporsi terbesar.</p>
+                    </article>
+                </div>
+                <div class="note-list">
+                    <p>
+                        <strong>Insight 1.</strong> Data paling banyak berasal dari
+                        YouTube: 1.722 dari 2.372 record.
+                    </p>
+                    <p>
+                        <strong>Insight 2.</strong> Notebook menemukan 12 keyword
+                        unik lintas WHO, Google Trends, dan YouTube.
+                    </p>
+                    <p>
+                        <strong>Insight 3.</strong> Dataset menggabungkan indikator
+                        kesehatan, tren pencarian, dan media sosial.
+                    </p>
+                </div>
+            </section>
+
+            <section id="dataset" class="section-block">
+                <div class="section-title">
+                    <h2>Overview dataset</h2>
+                </div>
+                <p class="section-copy">
+                    Notebook mengambil data dari MongoDB Atlas collection
+                    elderly_analysis.elderly_data: WHO 315 record, YouTube 1.722
+                    record, Google Trends 335 record.
+                </p>
+                <div class="panel">
+                    <h3>Distribusi source data</h3>
+                    <p class="muted">
+                        Menunjukkan jumlah record dummy per sumber, bukan bobot
+                        ilmiah sumber.
+                    </p>
+                    <div
+                        class="bar-list"
+                        role="list"
+                        aria-label="Jumlah record per sumber"
+                    >
+                        {
+                            datasetDistribution.map((item) => (
+                                <div class="bar-row" role="listitem">
+                                    <div class="bar-meta">
+                                        <>
+                                            <span>{item.source}</span>
+                                            <strong>{item.count} record</strong>
+                                        </>
+                                    </div>
+                                    <div class="bar-track" aria-hidden="true">
+                                        <span
+                                            style={`width: ${(item.count / maxDistribution) * 100}%`}
+                                        />
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-title">
+                    <h2>Topik populer</h2>
+                </div>
+                <p class="section-copy">
+                    Mengikuti visual notebook “Top 10 Keyword Terpopuler”:
+                    frekuensi keyword dihitung dari combined dataframe.
+                </p>
+                <div class="panel">
+                    <div
+                        class="bar-list"
+                        role="list"
+                        aria-label="Top keyword populer"
+                    >
+                        {
+                            topicPopularity.map((item) => (
+                                <div class="bar-row" role="listitem">
+                                    <div class="bar-meta">
+                                        <>
+                                            <span>{item.keyword}</span>
+                                            <strong>{item.score}</strong>
+                                        </>
+                                    </div>
+                                    <div class="bar-track" aria-hidden="true">
+                                        <span
+                                            style={`width: ${(item.score / maxTopicScore) * 100}%`}
+                                        />
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <section id="tren" class="section-block">
+                <div class="section-title">
+                    <h2>Tren kesehatan</h2>
+                </div>
+                <p class="section-copy">
+                    WHO memakai 4 indicator code: BP_04, NCD_GLUC_02,
+                    NCD_BMI_30A, dan WHOSIS_000001. Rentang historis notebook:
+                    1980–2022.
+                </p>
+                <div class="panel scroll-panel">
+                    <h3>Indikator WHO 2000–2024</h3>
+                    <svg
+                        class="line-chart"
+                        viewBox="0 0 600 280"
+                        role="img"
+                        aria-labelledby="who-chart-title who-chart-desc"
+                    >
+                        <title id="who-chart-title">
+                            Line chart indikator WHO 2000 sampai 2024
+                        </title>
+                        <desc id="who-chart-desc"
+                            >Empat indikator dummy: hipertensi, diabetes,
+                            obesitas, dan harapan hidup usia 60.</desc
+                        >
+                        <line x1="44" y1="220" x2="560" y2="220" class="axis"
+                        ></line>
+                        <line x1="44" y1="40" x2="44" y2="220" class="axis"
+                        ></line>
+                        {
+                            whoIndicators.map((indicator, index) => (
+                                <polyline
+                                    points={polyline(
+                                        indicator.values,
+                                        whoMin,
+                                        whoMax,
+                                    )}
+                                    fill="none"
+                                    stroke={whoColors[index]}
+                                    stroke-width="3"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            ))
+                        }
+                        {
+                            whoIndicators[0].values.map((point, index) => (
+                                <text
+                                    x={
+                                        44 +
+                                        (index /
+                                            (whoIndicators[0].values.length -
+                                                1)) *
+                                            500
+                                    }
+                                    y="250"
+                                    text-anchor="middle"
+                                    class="axis-label"
+                                >
+                                    {point.year}
+                                </text>
+                            ))
+                        }
+                    </svg>
+                    <div class="legend-grid">
+                        {
+                            whoIndicators.map((indicator, index) => (
+                                <div class="legend-item">
+                                    <>
+                                        <span
+                                            style={`background: ${whoColors[index]}`}
+                                        />
+                                        <strong>{indicator.keyword}</strong>
+                                        <small>{indicator.meaning}</small>
+                                    </>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-title">
+                    <h2>Minat publik</h2>
+                </div>
+                <p class="section-copy">
+                    Google Trends memakai 5 keyword notebook: lansia, perawatan
+                    lansia, kesehatan lansia, senam lansia, posyandu lansia.
+                    Rentang: Mei 2021–Mei 2026.
+                </p>
+                <div class="two-panels">
+                    <div class="panel scroll-panel">
+                        <h3>Tren pencarian bulanan</h3>
+                        <svg
+                            class="line-chart"
+                            viewBox="0 0 600 280"
+                            role="img"
+                            aria-labelledby="trend-chart-title trend-chart-desc"
+                        >
+                            <title id="trend-chart-title">
+                                Line chart minat pencarian Google Trends
+                            </title>
+                            <desc id="trend-chart-desc"
+                                >Lima keyword notebook bergerak dari Mei 2021
+                                sampai Mei 2026.</desc
+                            >
+                            <line
+                                x1="44"
+                                y1="220"
+                                x2="560"
+                                y2="220"
+                                class="axis"></line>
+                            <line x1="44" y1="40" x2="44" y2="220" class="axis"
+                            ></line>
+                            {
+                                trendKeys.map((item) => (
+                                    <polyline
+                                        points={trendPolyline(item.key)}
+                                        fill="none"
+                                        stroke={item.color}
+                                        stroke-width="3"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                ))
+                            }
+                            {
+                                trendSeries.map((point, index) => (
+                                    <text
+                                        x={
+                                            44 +
+                                            (index / (trendSeries.length - 1)) *
+                                                500
+                                        }
+                                        y="250"
+                                        text-anchor="middle"
+                                        class="axis-label"
+                                    >
+                                        {point.month}
+                                    </text>
+                                ))
+                            }
+                        </svg>
+                        <div class="legend-inline">
+                            {
+                                trendKeys.map((item) => (
+                                    <span>
+                                        <i
+                                            style={`background: ${item.color}`}
+                                        />
+                                        {item.label}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Ranking wilayah</h3>
+                        <div
+                            class="region-list"
+                            role="list"
+                            aria-label="Ranking minat provinsi"
+                        >
+                            {
+                                regionInterest.map((item, index) => (
+                                    <div class="region-row" role="listitem">
+                                        <span>{index + 1}</span>
+                                        <strong>{item.region}</strong>
+                                        <small>{item.keyword}</small>
+                                        <b>{item.score}</b>
+                                        <div
+                                            class="mini-track"
+                                            aria-hidden="true"
+                                        >
+                                            <span
+                                                style={`width: ${(item.score / maxRegionScore) * 100}%`}
+                                            />
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="youtube" class="section-block">
+                <div class="section-title">
+                    <h2>Percakapan YouTube</h2>
+                </div>
+                <p class="section-copy">
+                    YouTube berisi 1.722 record dari 8 keyword. Notebook
+                    mencatat metric engagement_score, sentiment,
+                    sentiment_score, video_id, channel, dan title.
+                </p>
+                <div class="two-panels">
+                    <div class="panel">
+                        <h3>Sentimen</h3>
+                        <div
+                            class="sentiment-stack"
+                            aria-label="Breakdown sentimen YouTube"
+                        >
+                            {
+                                sentimentBreakdown.map((item) => (
+                                    <span
+                                        class={item.sentiment}
+                                        style={`width: ${item.value}%`}
+                                        title={`${item.label} ${item.value}%`}
+                                    />
+                                ))
+                            }
+                        </div>
+                        <div class="simple-list">
+                            {
+                                sentimentBreakdown.map((item) => (
+                                    <p>
+                                        <>
+                                            <strong>
+                                                {item.value}% {item.label}
+                                            </strong>
+                                            <br />
+                                            <span>{item.description}</span>
+                                        </>
+                                    </p>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Top engagement</h3>
+                        <div
+                            class="topic-table"
+                            role="list"
+                            aria-label="Topik YouTube engagement tinggi"
+                        >
+                            {
+                                youtubeTopics.map((topic) => (
+                                    <article role="listitem">
+                                        <div>
+                                            <>
+                                                <strong>{topic.title}</strong>
+                                                <span>
+                                                    {topic.keyword} ·{" "}
+                                                    {topic.sentiment}
+                                                </span>
+                                            </>
+                                        </div>
+                                        <b>{topic.engagement}</b>
+                                        <div class="mini-track">
+                                            <span
+                                                style={`width: ${(topic.engagement / maxEngagement) * 100}%`}
+                                            />
+                                        </div>
+                                    </article>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="metodologi" class="section-block">
+                <div class="section-title">
+                    <h2>Metodologi dan batasan</h2>
+                </div>
+                <div class="panel prose-panel">
+                    <ul>
+                        <li>
+                            WHO diposisikan sebagai indikator kesehatan formal
+                            jangka panjang.
+                        </li>
+                        <li>
+                            Google Trends menunjukkan minat pencarian publik
+                            digital, bukan prevalensi penyakit.
+                        </li>
+                        <li>
+                            YouTube menunjukkan nada percakapan dan engagement
+                            video, bukan rekomendasi medis.
+                        </li>
+                        <li>
+                            Angka ringkasan mengikuti output notebook; seri
+                            chart tetap representasi ringkas agar cocok untuk
+                            dashboard statis.
+                        </li>
+                    </ul>
+                    <p>
+                        <strong>Disclaimer medis:</strong> dashboard ini bukan nasihat
+                        medis dan tidak menggantikan konsultasi tenaga kesehatan.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>
+                LansiaData · Capstone project · Mengikuti
+                elderly_analytics.ipynb · Collection terakhir {
+                    keyMetrics.lastUpdated
+                }
+            </p>
+        </footer>
+    </body>
 </html>
+
+<style>
+    :root {
+        --blue: #0052ff;
+        --ink: #111111;
+        --body: #4b5563;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+        --soft: #f9fafb;
+        --green: #047857;
+        --red: #b91c1c;
+        font-family:
+            Inter,
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+        color: var(--ink);
+        background: white;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        margin: 0;
+        background: white;
+        color: var(--ink);
+    }
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+    p {
+        margin: 0;
+        color: var(--body);
+        line-height: 1.65;
+    }
+    h1,
+    h2,
+    h3 {
+        margin: 0;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+    }
+    h1 {
+        font-size: clamp(2.25rem, 6vw, 4rem);
+        line-height: 1.05;
+        max-width: 760px;
+    }
+    h2 {
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+        line-height: 1.15;
+    }
+    h3 {
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+    strong,
+    b,
+    dd {
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-weight: 600;
+    }
+
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        min-height: 56px;
+        padding: 0 max(20px, calc((100vw - 1040px) / 2));
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(12px);
+    }
+    .brand {
+        font-weight: 700;
+        color: var(--ink);
+    }
+    nav {
+        display: flex;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 0.875rem;
+    }
+    nav a:hover {
+        color: var(--ink);
+    }
+
+    .document {
+        width: min(1040px, calc(100% - 40px));
+        margin: 0 auto;
+    }
+    .section-block {
+        padding: 56px 0;
+        border-bottom: 1px solid var(--line);
+    }
+    .cover {
+        padding-top: 72px;
+    }
+    .eyebrow,
+    .section-number {
+        color: var(--blue);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+    .lede {
+        margin-top: 18px;
+        max-width: 760px;
+        font-size: 1.06rem;
+    }
+    .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        margin: 32px 0 0;
+        border: 1px solid var(--line);
+    }
+    .meta-grid div {
+        padding: 16px;
+        border-right: 1px solid var(--line);
+    }
+    .meta-grid div:last-child {
+        border-right: 0;
+    }
+    dt {
+        margin: 0 0 6px;
+        color: var(--muted);
+        font-size: 0.8rem;
+    }
+    dd {
+        margin: 0;
+    }
+
+    .section-title {
+        align-items: start;
+        margin-bottom: 20px;
+    }
+    .section-copy {
+        max-width: 740px;
+        margin-bottom: 20px;
+    }
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 1px solid var(--line);
+    }
+    .metric {
+        padding: 18px;
+        border-right: 1px solid var(--line);
+    }
+    .metric:last-child {
+        border-right: 0;
+    }
+    .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.82rem;
+        margin-bottom: 12px;
+    }
+    .metric strong {
+        display: block;
+        color: var(--ink);
+        font-size: 1.85rem;
+        line-height: 1.1;
+    }
+    .metric .text-value {
+        font-family: inherit;
+        font-size: 1.05rem;
+    }
+    .metric p {
+        margin-top: 10px;
+        font-size: 0.88rem;
+    }
+    .note-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 22px;
+    }
+    .note-list strong {
+        color: var(--ink);
+        font-family: inherit;
+    }
+
+    .panel {
+        border: 1px solid var(--line);
+        padding: 20px;
+        background: white;
+    }
+    .panel h3 {
+        margin-bottom: 8px;
+    }
+    .muted {
+        color: var(--muted);
+        font-size: 0.92rem;
+        margin-bottom: 18px;
+    }
+    .bar-list {
+        display: grid;
+        gap: 16px;
+        margin-top: 18px;
+    }
+    .bar-row {
+        display: grid;
+        gap: 8px;
+    }
+    .bar-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 0.92rem;
+    }
+    .bar-track,
+    .mini-track {
+        height: 8px;
+        background: var(--soft);
+        border: 1px solid var(--line);
+        overflow: hidden;
+    }
+    .bar-track span,
+    .mini-track span {
+        display: block;
+        height: 100%;
+        background: var(--blue);
+    }
+
+    .scroll-panel {
+        overflow-x: auto;
+    }
+    .line-chart {
+        min-width: 600px;
+        width: 100%;
+        height: auto;
+        margin-top: 12px;
+    }
+    .axis {
+        stroke: var(--line);
+        stroke-width: 1.5;
+    }
+    .axis-label {
+        fill: var(--muted);
+        font-size: 12px;
+        font-family: "SFMono-Regular", Consolas, monospace;
+    }
+    .legend-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+    }
+    .legend-item {
+        display: grid;
+        grid-template-columns: 10px 1fr;
+        gap: 10px;
+        align-items: start;
+        font-size: 0.9rem;
+    }
+    .legend-item span {
+        width: 10px;
+        height: 10px;
+        margin-top: 5px;
+    }
+    .legend-item small {
+        grid-column: 2;
+        color: var(--muted);
+        line-height: 1.45;
+    }
+    .two-panels {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 20px;
+    }
+    .legend-inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 12px;
+        color: var(--body);
+        font-size: 0.9rem;
+    }
+    .legend-inline span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .legend-inline i {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+    }
+
+    .region-list {
+        display: grid;
+        gap: 12px;
+    }
+    .region-row {
+        display: grid;
+        grid-template-columns: 24px 1fr auto;
+        gap: 8px 12px;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+    .region-row > span:first-child {
+        color: var(--muted);
+    }
+    .region-row small {
+        grid-column: 2;
+        color: var(--muted);
+    }
+    .region-row .mini-track {
+        grid-column: 2 / 4;
+        height: 6px;
+    }
+
+    .sentiment-stack {
+        height: 12px;
+        display: flex;
+        margin: 18px 0;
+        background: var(--soft);
+        border: 1px solid var(--line);
+        overflow: hidden;
+    }
+    .sentiment-stack span {
+        height: 100%;
+    }
+    .positive {
+        background: var(--green);
+    }
+    .neutral {
+        background: var(--blue);
+    }
+    .negative {
+        background: var(--red);
+    }
+    .simple-list {
+        display: grid;
+        gap: 12px;
+    }
+    .simple-list strong {
+        color: var(--ink);
+        font-family: inherit;
+    }
+    .simple-list span {
+        color: var(--muted);
+    }
+    .topic-table {
+        display: grid;
+        gap: 14px;
+    }
+    .topic-table article {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px 14px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--line);
+    }
+    .topic-table article:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+    .topic-table span {
+        display: block;
+        color: var(--muted);
+        margin-top: 3px;
+        font-size: 0.88rem;
+    }
+    .topic-table .mini-track {
+        grid-column: 1 / 3;
+        height: 6px;
+    }
+    .prose-panel ul {
+        margin: 0 0 18px;
+        padding-left: 20px;
+        color: var(--body);
+        line-height: 1.7;
+    }
+    .prose-panel strong {
+        color: var(--ink);
+        font-family: inherit;
+    }
+
+    .footer {
+        width: min(1040px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+        color: var(--muted);
+        font-size: 0.88rem;
+    }
+
+    @media (max-width: 820px) {
+        .site-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 14px 20px;
+        }
+        nav {
+            flex-wrap: wrap;
+            gap: 10px 16px;
+        }
+        .document,
+        .footer {
+            width: min(100% - 28px, 1040px);
+        }
+        .section-block {
+            padding: 42px 0;
+        }
+        .section-title {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        .metrics-grid,
+        .meta-grid,
+        .two-panels,
+        .legend-grid {
+            grid-template-columns: 1fr;
+        }
+        .metric,
+        .meta-grid div {
+            border-right: 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .metric:last-child,
+        .meta-grid div:last-child {
+            border-bottom: 0;
+        }
+        .note-list {
+            padding-left: 0;
+        }
+    }
+</style>
