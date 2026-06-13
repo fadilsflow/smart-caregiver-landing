@@ -4,21 +4,6 @@
 
 <section class="promo-flow" aria-label="Smart Caregiver landing sections">
     <div class="promo-inner">
-        <section class="proof-strip" aria-label="Keunggulan utama">
-            <article>
-                <strong>01</strong>
-                <span>Pengingat rawat harian yang mudah diikuti keluarga.</span>
-            </article>
-            <article>
-                <strong>02</strong>
-                <span>Panduan perawatan lansia dibuat ringkas dan praktis.</span>
-            </article>
-            <article>
-                <strong>03</strong>
-                <span>Didukung insight publik dari data kesehatan lansia.</span>
-            </article>
-        </section>
-
         <section id="cara-kerja" class="feature-band section-pad">
             <div class="section-heading">
                 <span class="eyebrow">Cara kerja</span>
@@ -132,45 +117,6 @@
 
     .section-pad {
         padding: clamp(72px, 9vw, 120px) 0;
-    }
-
-    .proof-strip {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-        padding: 24px 0 0;
-        transform: translateY(-50%);
-    }
-
-    .proof-strip article {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 14px;
-        align-items: center;
-        min-height: 96px;
-        padding: 20px;
-        border: 1px solid color-mix(in srgb, var(--blue) 12%, var(--hairline));
-        border-radius: var(--radius-xl);
-        background: color-mix(in srgb, var(--canvas) 88%, transparent);
-        box-shadow: 0 18px 48px color-mix(in srgb, var(--blue) 10%, transparent);
-        backdrop-filter: blur(14px);
-    }
-
-    .proof-strip strong {
-        display: inline-grid;
-        place-items: center;
-        width: 42px;
-        height: 42px;
-        border-radius: var(--radius-full);
-        background: var(--ink);
-        color: var(--on-dark);
-        font-size: 0.82rem;
-    }
-
-    .proof-strip span {
-        color: var(--body-strong);
-        font-weight: 700;
-        line-height: 1.4;
     }
 
     .section-heading {
@@ -423,16 +369,10 @@
     }
 
     @media (max-width: 900px) {
-        .proof-strip,
         .feature-grid,
         .preview-band,
         .download-band {
             grid-template-columns: 1fr;
-        }
-
-        .proof-strip {
-            transform: none;
-            padding-top: 24px;
         }
 
         .feature-card {
@@ -455,10 +395,6 @@
     @media (max-width: 640px) {
         .promo-inner {
             width: min(100% - 32px, 520px);
-        }
-
-        .proof-strip article {
-            min-height: 0;
         }
 
         .phone-card::after {
