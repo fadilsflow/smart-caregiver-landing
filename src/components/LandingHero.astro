@@ -1,0 +1,255 @@
+---
+// Landing hero — mobile app Smart Caregiver
+---
+
+<section class="hero" aria-labelledby="hero-title">
+    <div class="hero-inner">
+        <header class="hero-header" aria-label="Smart Caregiver">
+            <a class="brand" href="/" aria-label="Smart Caregiver">
+                <span>
+                    <strong>Smart Caregiver</strong>
+                </span>
+            </a>
+
+            <a class="download-top" href="#unduh">Unduh Aplikasi</a>
+        </header>
+
+        <div class="hero-copy">
+            <h1 id="hero-title">
+                Dampingi dengan hati,<br />
+                rawat dengan <span>mudah.</span>
+            </h1>
+            <p>
+                Panduan lengkap dan pengingat pintar untuk membantu Anda merawat
+                orang tersayang dengan lebih tenang dan percaya diri.
+            </p>
+
+            <div class="hero-actions">
+                <a class="primary-action" href="#unduh">
+                    <span aria-hidden="true">☁</span>
+                    Unduh Sekarang
+                </a>
+                <a class="secondary-action" href="#cara-kerja">
+                    <span aria-hidden="true">▶</span>
+                    Lihat Cara Kerja
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .hero {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        height: 100svh;
+        min-height: 100vh;
+        min-height: 100svh;
+        max-height: 100vh;
+        max-height: 100svh;
+        margin: 0 calc(50% - 50vw);
+        overflow: hidden;
+        background: url("/images/bg-hero.png") center / cover fixed no-repeat;
+        color: var(--ink);
+    }
+
+    .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(
+                180deg,
+                color-mix(in srgb, var(--blue-soft) 72%, transparent) 0%,
+                color-mix(in srgb, var(--canvas) 12%, transparent) 54%,
+                color-mix(in srgb, var(--accent-yellow) 18%, transparent) 100%
+            ),
+            radial-gradient(
+                circle at 50% 14%,
+                color-mix(in srgb, var(--canvas) 78%, transparent),
+                transparent 30%
+            );
+        pointer-events: none;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        width: min(100% - 96px, 1580px);
+        height: 100%;
+        margin: 0 auto;
+        padding: clamp(24px, 3.5vw, 54px) 0;
+    }
+
+    .hero-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-lg);
+    }
+
+    .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 13px;
+        color: var(--ink);
+    }
+
+    .brand strong {
+        display: block;
+        font-family: var(--font-sans);
+        font-size: 2rem;
+        line-height: 1.05;
+        font-weight: bold;
+    }
+
+    .brand small {
+        display: block;
+        margin-top: 3px;
+        color: var(--body);
+        font-weight: 600;
+    }
+
+    .download-top,
+    .primary-action {
+        background: var(--ink);
+        color: var(--on-dark);
+        box-shadow:
+            inset 0 -2px 0 color-mix(in srgb, var(--ink) 12%, transparent),
+            0 14px 32px color-mix(in srgb, var(--blue) 24%, transparent);
+    }
+
+    .download-top {
+        padding: 18px 28px;
+        border-radius: var(--radius-pill);
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .hero-copy {
+        align-self: center;
+        justify-self: center;
+        width: min(980px, 100%);
+        margin-top: clamp(-80px, -8vh, -32px);
+        text-align: center;
+    }
+
+    h1 {
+        color: var(--ink);
+        font-size: clamp(3.2rem, 6vw, 6.9rem);
+        font-weight: 800;
+        letter-spacing: -0.055em;
+        line-height: 0.98;
+        text-shadow: 0 6px 0 color-mix(in srgb, var(--canvas) 20%, transparent);
+    }
+
+    h1 span {
+        display: inline-block;
+        padding: 0.02em 0.34em 0.09em;
+        border-radius: var(--radius-pill);
+        /*background: var(--blue);
+        color: var(--on-primary);*/
+        letter-spacing: -0.045em;
+        /*box-shadow: 0 20px 48px color-mix(in srgb, var(--blue) 24%, transparent);*/
+    }
+
+    .hero-copy p {
+        max-width: 760px;
+        margin: 20px auto 0;
+        color: var(--body-strong);
+        font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+        font-weight: 500;
+        line-height: 1.55;
+    }
+
+    .hero-actions {
+        display: flex;
+        justify-content: center;
+        gap: 26px;
+        margin-top: 28px;
+    }
+
+    .hero-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-width: 250px;
+        padding: 17px 26px;
+        border-radius: var(--radius-pill);
+        font-weight: 800;
+    }
+
+    .secondary-action {
+        border: 2px solid var(--blue);
+        background: color-mix(in srgb, var(--blue-soft) 46%, transparent);
+        color: var(--ink);
+        backdrop-filter: blur(10px);
+    }
+
+    .secondary-action span {
+        color: var(--blue);
+    }
+
+    @media (max-width: 1180px) {
+        .hero-inner {
+            width: min(100% - 40px, 980px);
+        }
+    }
+
+    @media (max-width: 720px) {
+        .hero {
+            background-attachment: scroll;
+        }
+
+        .hero-inner {
+            width: min(100% - 32px, 520px);
+            padding-top: 22px;
+        }
+
+        .download-top {
+            display: none;
+        }
+
+        .brand-mark {
+            width: 48px;
+            height: 48px;
+        }
+
+        .brand strong {
+            font-size: 1.15rem;
+        }
+
+        .brand small {
+            font-size: 0.75rem;
+        }
+
+        .hero-copy {
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 12vw, 4.4rem);
+        }
+
+        .hero-copy p {
+            font-size: 1rem;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        .hero-actions a {
+            width: min(100%, 280px);
+            min-width: 0;
+            padding: 14px 20px;
+        }
+    }
+</style>

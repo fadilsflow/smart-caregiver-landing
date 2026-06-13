@@ -1,0 +1,37 @@
+---
+import type { TopicPopularity } from '../lib/types';
+
+export interface Props {
+  topics: TopicPopularity[];
+}
+
+const { topics } = Astro.props;
+const maxScore = Math.max(...topics.map((t) => t.score));
+---
+
+<section id="topik" class="section-block">
+  <div class="section-title">
+    <h2>Topik Populer</h2>
+  </div>
+  <p class="section-copy">
+    Keyword yang paling sering muncul lintas sumber data. "Perawatan lansia" memimpin
+    dengan frekuensi tertinggi, diikuti oleh keyword umum seperti "lansia" dan
+    "kesehatan lansia".
+  </p>
+
+  <div class="panel">
+    <div class="bar-list" role="list" aria-label="Top keyword populer">
+      {topics.map((item) => (
+        <div class="bar-row" role="listitem">
+          <div class="bar-meta">
+            <span>{item.keyword}</span>
+            <strong>{item.score}</strong>
+          </div>
+          <div class="bar-track" aria-hidden="true">
+            <span style={`width: ${(item.score / maxScore) * 100}%`} />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

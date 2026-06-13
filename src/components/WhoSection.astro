@@ -1,0 +1,82 @@
+---
+import type { WhoIndicator } from '../lib/types';
+
+export interface Props {
+  indicators: WhoIndicator[];
+}
+
+const { indicators } = Astro.props;
+const allValues = indicators.flatMap((i) => i.values.map((v) => v.value));
+const min = Math.min(...allValues);
+const max = Math.max(...allValues);
+const colors = ['var(--blue)', 'var(--teal)', 'var(--green)', 'var(--orange)'];
+
+function polyline(values: { value: number }[], min: number, max: number) {
+  return values
+    .map((point, i) => {
+      const x = 44 + (i / (values.length - 1)) * 500;
+      const y = 220 - ((point.value - min) / (max - min)) * 170;
+      return `${x},${y}`;
+    })
+    .join(' ');
+}
+---
+
+<section id="tren" class="section-block">
+  <div class="section-title">
+    <h2>Tren Kesehatan (WHO)</h2>
+  </div>
+  <p class="section-copy">
+    WHO menyediakan data historis 1980–2022 untuk empat indikator kesehatan yang
+    relevan dengan lansia di Indonesia: hipertensi, diabetes, obesitas, dan harapan hidup.
+  </p>
+
+  <div class="panel scroll-panel">
+    <h3>Indikator WHO 1980–2022</h3>
+    <svg
+      class="line-chart"
+      viewBox="0 0 600 280"
+      role="img"
+      aria-labelledby="who-chart-title who-chart-desc"
+    >
+      <title id="who-chart-title">Line chart indikator WHO</title>
+      <desc id="who-chart-desc">
+        Empat indikator: hipertensi, diabetes, obesitas, dan harapan hidup kelompok 60+
+      </desc>
+      <line x1="44" y1="220" x2="560" y2="220" class="axis" />
+      <line x1="44" y1="40" x2="44" y2="220" class="axis" />
+
+      {indicators.map((indicator, index) => (
+        <polyline
+          points={polyline(indicator.values, min, max)}
+          fill="none"
+          stroke={colors[index]}
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      ))}
+
+      {indicators[0].values.map((point, i) => (
+        <text
+          x={44 + (i / (indicators[0].values.length - 1)) * 500}
+          y="250"
+          text-anchor="middle"
+          class="axis-label"
+        >
+          {point.year}
+        </text>
+      ))}
+    </svg>
+
+    <div class="legend-grid">
+      {indicators.map((indicator, index) => (
+        <div class="legend-item">
+          <span class="swatch" style={`background: ${colors[index]}`} />
+          <strong>{indicator.keyword}</strong>
+          <small>{indicator.meaning}</small>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

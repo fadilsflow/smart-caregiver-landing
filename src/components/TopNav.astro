@@ -1,0 +1,62 @@
+---
+// Top navigation — Coinbase-inspired light nav
+---
+
+<header class="top-nav">
+  <div class="top-nav-inner">
+    <a href="/" class="brand">SMARTCAREGIVER</a>
+    <nav class="nav-links">
+      <a href="#ringkasan">Ringkasan</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#tren">Tren</a>
+      <a href="#youtube">YouTube</a>
+      <a href="#metodologi">Metodologi</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .top-nav {
+    height: 64px;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--canvas);
+  }
+
+  .top-nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: min(var(--content-max), calc(100% - var(--content-padding) * 2));
+    margin: 0 auto;
+  }
+
+  .brand {
+    font-weight: 700;
+    color: var(--blue);
+    font-size: 14px;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--body);
+    transition: color 0.15s;
+  }
+
+  .nav-links a:hover {
+    color: var(--ink);
+  }
+
+  @media (max-width: 640px) {
+    .nav-links {
+      display: none;
+    }
+  }
+</style>

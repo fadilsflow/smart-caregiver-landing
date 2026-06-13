@@ -1,0 +1,131 @@
+---
+import type { KeyMetrics } from '../lib/types';
+
+export interface Props {
+  keyMetrics: KeyMetrics;
+}
+
+const { keyMetrics } = Astro.props;
+
+const metrics = [
+  { label: 'Total records', value: keyMetrics.totalRecords.toLocaleString('id-ID'), desc: 'Record gabungan 3 sumber' },
+  { label: 'Unique keywords', value: String(keyMetrics.uniqueKeywords), desc: 'Keyword lintas sumber' },
+  { label: 'Top keyword', value: keyMetrics.topKeyword, desc: 'Frekuensi tertinggi', mono: false },
+  { label: 'Sentimen YouTube', value: keyMetrics.averageSentiment, desc: 'Proporsi terbesar' },
+];
+---
+
+<section id="ringkasan" class="section-block">
+  <div class="section-title">
+    <h2>Ringkasan Eksekutif</h2>
+  </div>
+
+  <div class="metrics-grid">
+    {metrics.map((m) => (
+      <article class="metric-card">
+        <span class="metric-label">{m.label}</span>
+        <strong class:list={['metric-value', m.mono === false && 'text-value']}>{m.value}</strong>
+        <p class="metric-desc">{m.desc}</p>
+      </article>
+    ))}
+  </div>
+
+  <div class="insight-box">
+    <p><strong>Insight 1.</strong> Data paling banyak berasal dari YouTube: 1.722 dari 2.372 record — menunjukkan tingginya konten kesehatan lansia di platform video.</p>
+    <p><strong>Insight 2.</strong> Notebook menemukan 12 keyword unik lintas WHO, Google Trends, dan YouTube, dengan "perawatan lansia" sebagai topik paling dominan.</p>
+    <p><strong>Insight 3.</strong> Dataset menggabungkan tiga dimensi: indikator kesehatan formal (WHO), minat pencarian publik (Google Trends), dan percakapan media digital (YouTube).</p>
+  </div>
+</section>
+
+<style>
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--surface-card);
+  }
+
+  .metric-card {
+    padding: var(--space-md);
+    border-right: 1px solid var(--hairline);
+  }
+
+  .metric-card:last-child {
+    border-right: 0;
+  }
+
+  .metric-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .metric-value {
+    display: block;
+    color: var(--blue);
+    font-size: 1.75rem;
+    line-height: 1.1;
+  }
+
+  .metric-value.text-value {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+  }
+
+  .metric-desc {
+    margin-top: 10px;
+    font-size: 0.88rem;
+  }
+
+  .insight-box {
+    display: grid;
+    gap: 10px;
+    margin-top: var(--space-lg);
+    padding: 18px 20px;
+    border-left: 3px solid var(--blue);
+    background: var(--blue-soft);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .insight-box strong {
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+
+  .insight-box p {
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 820px) {
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .metric-card:nth-child(2) {
+      border-right: 0;
+    }
+
+    .metric-card:nth-child(1),
+    .metric-card:nth-child(2) {
+      border-bottom: 1px solid var(--hairline);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .metric-card {
+      border-right: 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .metric-card:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

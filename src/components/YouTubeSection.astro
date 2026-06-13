@@ -1,0 +1,70 @@
+---
+import type { YouTubeTopic, SentimentBreakdown } from '../lib/types';
+
+export interface Props {
+  topics: YouTubeTopic[];
+  sentiment: SentimentBreakdown[];
+}
+
+const { topics, sentiment } = Astro.props;
+const maxEngagement = Math.max(...topics.map((t) => t.engagement));
+
+function formatNumber(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  return String(n);
+}
+---
+
+<section id="youtube" class="section-block">
+  <div class="section-title">
+    <h2>Percakapan YouTube</h2>
+  </div>
+  <p class="section-copy">
+    YouTube menyumbang 1.722 record dari 8 keyword terkait lansia. Sebagian besar
+    video bersifat informatif netral, dengan engagement tertinggi pada konten
+    senam lansia dan perawatan harian.
+  </p>
+
+  <div class="two-panels">
+    <div class="panel">
+      <h3>Sentimen</h3>
+      <div class="sentiment-stack" aria-label="Breakdown sentimen YouTube">
+        {sentiment.map((item) => (
+          <span
+            class={item.sentiment}
+            style={`width: ${item.value}%`}
+            title={`${item.label} ${item.value}%`}
+          />
+        ))}
+      </div>
+
+      <div class="simple-list">
+        {sentiment.map((item) => (
+          <p>
+            <strong>{item.value}% {item.label}</strong><br />
+            <span>{item.description}</span>
+          </p>
+        ))}
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Top Engagement</h3>
+      <div class="topic-table" role="list" aria-label="Topik YouTube engagement tinggi">
+        {topics.map((topic) => (
+          <article role="listitem">
+            <div>
+              <strong>{topic.title}</strong>
+              <span>{topic.keyword} · {topic.sentiment}</span>
+            </div>
+            <b>{formatNumber(topic.engagement)}</b>
+            <div class="mini-track">
+              <span style={`width: ${(topic.engagement / maxEngagement) * 100}%`} />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

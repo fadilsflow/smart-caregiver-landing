@@ -1,0 +1,8 @@
+# Cloudflare Pages config for Astro frontend
+# Deploy via `wrangler pages deploy dist/ --project-name=lansia-dashboard`
+
+name = "lansia-dashboard"
+pages_build_output_dir = "dist"
+
+[env.production]
+vars = { PUBLIC_API_URL = "https://lansia-dashboard-api.your-worker.workers.dev" }

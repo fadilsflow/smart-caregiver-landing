@@ -1,0 +1,116 @@
+---
+// Hero section — cover with metadata
+import type { KeyMetrics } from "../lib/types";
+
+export interface Props {
+    keyMetrics: KeyMetrics;
+}
+
+const { keyMetrics } = Astro.props;
+---
+
+<section class="hero section-block">
+    <h1>Memahami Kesehatan Lansia Indonesia lewat Data Publik</h1>
+    <p class="hero-lede">
+        Dashboard ini menyajikan sinyal dari tiga sumber data — WHO, Google
+        Trends, dan YouTube — untuk membantu publik memahami isu kesehatan
+        lansia di Indonesia.
+    </p>
+
+    <div class="hero-meta">
+        <dl class="meta-grid">
+            <div>
+                <dt>Dataset</dt>
+                <dd>elderly_analysis.elderly_data</dd>
+            </div>
+            <div>
+                <dt>Periode</dt>
+                <dd>{keyMetrics.timerange}</dd>
+            </div>
+        </dl>
+    </div>
+
+    <figure class="hero-image">
+        <img
+            src="/images/cover-header.png"
+            alt="Ilustrasi dashboard kesehatan lansia Indonesia"
+        />
+    </figure>
+</section>
+
+<style>
+    .hero {
+        padding-top: var(--space-xxl);
+    }
+
+    .hero-lede {
+        margin-top: 22px;
+        max-width: 780px;
+        font-size: 1.12rem;
+    }
+
+    .hero-meta {
+        margin-top: 36px;
+    }
+
+    .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border: 1px solid var(--hairline);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+    }
+
+    .meta-grid div {
+        padding: var(--space-base);
+        border-right: 1px solid var(--hairline);
+    }
+
+    .meta-grid div:last-child {
+        border-right: 0;
+    }
+
+    dt {
+        margin: 0 0 6px;
+        color: var(--muted);
+        font-size: 0.8rem;
+    }
+
+    dd {
+        margin: 0;
+    }
+
+    .hero-image {
+        width: 100%;
+        margin: var(--space-xxl) 0 0;
+        border: 1px solid var(--hairline);
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        background: var(--surface-strong);
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero-image figcaption {
+        padding: var(--space-sm) var(--space-base);
+        border-top: 1px solid var(--hairline);
+    }
+
+    @media (max-width: 640px) {
+        .meta-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .meta-grid div {
+            border-right: 0;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        .meta-grid div:last-child {
+            border-bottom: 0;
+        }
+    }
+</style>

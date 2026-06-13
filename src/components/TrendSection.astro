@@ -1,0 +1,107 @@
+---
+import type { TrendSeries, RegionInterest } from '../lib/types';
+
+export interface Props {
+  series: TrendSeries[];
+  regions: RegionInterest[];
+}
+
+const { series, regions } = Astro.props;
+const maxRegionScore = Math.max(...regions.map((r) => r.score));
+
+const trendConfig = [
+  { key: 'lansia', label: 'lansia', color: 'var(--blue)' },
+  { key: 'kesehatan', label: 'kesehatan lansia', color: 'var(--teal)' },
+  { key: 'senam', label: 'senam lansia', color: 'var(--green)' },
+  { key: 'posyandu', label: 'posyandu lansia', color: 'var(--orange)' },
+] as const;
+
+function polyline(key: string) {
+  return series
+    .map((point, i) => {
+      const x = 44 + (i / (series.length - 1)) * 500;
+      const val = Number(point[key]) || 0;
+      const y = 220 - ((val - 10) / 85) * 170;
+      return `${x},${y}`;
+    })
+    .join(' ');
+}
+---
+
+<section id="publik" class="section-block">
+  <div class="section-title">
+    <h2>Minat Publik</h2>
+  </div>
+  <p class="section-copy">
+    Google Trends menunjukkan minat pencarian publik terhadap topik lansia dari
+    Mei 2021 hingga Mei 2026. "Senam lansia" dan "lansia" menjadi keyword dengan
+    tren pertumbuhan paling konsisten.
+  </p>
+
+  <div class="two-panels">
+    <div class="panel scroll-panel">
+      <h3>Tren Pencarian Bulanan</h3>
+      <svg
+        class="line-chart"
+        viewBox="0 0 600 280"
+        role="img"
+        aria-labelledby="trend-chart-title trend-chart-desc"
+      >
+        <title id="trend-chart-title">Line chart Google Trends</title>
+        <desc id="trend-chart-desc">
+          Lima keyword dari Mei 2021 sampai Mei 2026
+        </desc>
+        <line x1="44" y1="220" x2="560" y2="220" class="axis" />
+        <line x1="44" y1="40" x2="44" y2="220" class="axis" />
+
+        {trendConfig.map((item) => (
+          <polyline
+            points={polyline(item.key)}
+            fill="none"
+            stroke={item.color}
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        ))}
+
+        {series.map((point, i) => (
+          <text
+            x={44 + (i / (series.length - 1)) * 500}
+            y="250"
+            text-anchor="middle"
+            class="axis-label"
+          >
+            {point.month}
+          </text>
+        ))}
+      </svg>
+
+      <div class="legend-inline">
+        {trendConfig.map((item) => (
+          <span>
+            <i style={`background: ${item.color}`} />
+            {item.label}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Ranking Wilayah</h3>
+      <div class="region-list" role="list" aria-label="Ranking minat provinsi">
+        {regions.map((item, index) => (
+          <div class="region-row" role="listitem">
+            <span class="rank">{index + 1}</span>
+            <strong>{item.region}</strong>
+            <small>{item.keyword}</small>
+            <b>{item.score}</b>
+            <div class="mini-track" aria-hidden="true">
+              <span style={`width: ${(item.score / maxRegionScore) * 100}%`} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+---
+export interface Props {
+  lastUpdated: string;
+}
+
+const { lastUpdated } = Astro.props;
+---
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p>LansiaData · Capstone Project</p>
+    <p>Data: WHO GHO API, Google Trends, YouTube Data API v3</p>
+    <p>Collection terakhir: {lastUpdated}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: var(--space-xxl) 0;
+  }
+
+  .footer-inner {
+    width: min(var(--content-max), calc(100% - var(--content-padding) * 2));
+    margin: 0 auto;
+    display: grid;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+</style>

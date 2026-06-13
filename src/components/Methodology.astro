@@ -1,0 +1,114 @@
+---
+// Methodology & limitations section
+---
+
+<section id="metodologi" class="section-block">
+  <div class="section-title">
+    <h2>Metodologi dan Batasan</h2>
+  </div>
+  <p class="section-copy">
+    Dashboard ini adalah proyek akademik untuk menampilkan data kesehatan lansia
+    Indonesia dari tiga sumber berbeda. Setiap sumber memiliki karakteristik dan
+    keterbatasan masing-masing.
+  </p>
+
+  <div class="panel prose-panel">
+    <h3>Sumber Data</h3>
+    <ul>
+      <li>
+        <strong>WHO (GHO API):</strong> Indikator kesehatan formal jangka panjang
+        (1980–2022) untuk kelompok usia 60+ di Indonesia. Empat indikator:
+        hipertensi (BP_04), diabetes (NCD_GLUC_02), obesitas (NCD_BMI_30A), dan
+        harapan hidup (WHOSIS_000001).
+      </li>
+      <li>
+        <strong>Google Trends (pytrends):</strong> Minat pencarian publik digital
+        untuk 5 keyword lansia (Mei 2021–Mei 2026). Menunjukkan <em>perhatian publik</em>,
+        bukan prevalensi penyakit.
+      </li>
+      <li>
+        <strong>YouTube Data API v3:</strong> Engagement dan sentimen video untuk
+        8 keyword lansia (2017–2026). Menunjukkan <em>nada percakapan digital</em>,
+        bukan rekomendasi medis.
+      </li>
+    </ul>
+
+    <h3>Batasan</h3>
+    <ul>
+      <li>
+        <strong>Data dummy:</strong> Versi awal dashboard ini menampilkan data
+        tiruan yang meniru struktur pipeline asli. Data belum terhubung ke
+        MongoDB live.
+      </li>
+      <li>
+        Google Trends hanya mencakup pengguna internet di Indonesia — tidak mewakili
+        seluruh populasi.
+      </li>
+      <li>
+        YouTube sentiment analysis menggunakan model dasar dan mungkin tidak
+        menangkap nuansa konteks budaya.
+      </li>
+      <li>
+        WHO data bersifat tahunan dan mungkin tidak merefleksikan perubahan
+        jangka pendek.
+      </li>
+    </ul>
+
+    <div class="disclaimer">
+      <strong>⚠️ Disclaimer Medis</strong>
+      <p>
+        Dashboard ini adalah alat informasi publik dan bukan nasihat medis.
+        Data yang ditampilkan tidak boleh digunakan sebagai dasar diagnosis,
+        pengobatan, atau keputusan kesehatan lainnya. Konsultasikan dengan
+        tenaga kesehatan profesional untuk saran medis.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .prose-panel h3 {
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .prose-panel h3:first-child {
+    margin-top: 0;
+  }
+
+  .prose-panel ul {
+    margin: 0 0 var(--space-lg);
+    padding-left: 20px;
+    line-height: 1.7;
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .prose-panel li {
+    color: var(--body);
+  }
+
+  .prose-panel strong {
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+
+  .disclaimer {
+    margin-top: var(--space-xl);
+    padding: var(--space-base) var(--space-md);
+    background: #fff8e6;
+    border: 1px solid var(--accent-yellow);
+    border-radius: var(--radius-md);
+  }
+
+  .disclaimer strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+
+  .disclaimer p {
+    font-size: 0.9rem;
+    color: var(--body);
+  }
+</style>

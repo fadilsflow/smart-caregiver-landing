@@ -1,0 +1,72 @@
+---
+import TopNav from "../components/TopNav.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import MetricsGrid from "../components/MetricsGrid.astro";
+import DatasetSection from "../components/DatasetSection.astro";
+import TopicSection from "../components/TopicSection.astro";
+import WhoSection from "../components/WhoSection.astro";
+import TrendSection from "../components/TrendSection.astro";
+import YouTubeSection from "../components/YouTubeSection.astro";
+import Methodology from "../components/Methodology.astro";
+
+// Global design tokens
+import "../styles/global.css";
+
+// Data layer — swap to API client when SSR enabled
+import {
+    keyMetrics,
+    datasetDistribution,
+    topicPopularity,
+    whoIndicators,
+    trendSeries,
+    regionInterest,
+    youtubeTopics,
+    sentimentBreakdown,
+    notebookSummary,
+} from "../data/dummy-dashboard";
+---
+
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <meta
+            name="description"
+            content="Dashboard interaktif kesehatan lansia Indonesia — data WHO, Google Trends, dan YouTube. Lihat tren indikator kesehatan, minat publik, dan percakapan digital."
+        />
+        <title>Dashboard Kesehatan Lansia Indonesia — SmartCaregiver</title>
+
+        <!-- Global design tokens & reset are imported in frontmatter -->
+
+        <!-- Load Inter font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <TopNav />
+
+        <main class="page-container">
+            <Hero keyMetrics={keyMetrics} />
+            <MetricsGrid keyMetrics={keyMetrics} />
+            <DatasetSection distribution={datasetDistribution} />
+            <TopicSection topics={topicPopularity} />
+            <WhoSection indicators={whoIndicators} />
+            <TrendSection series={trendSeries} regions={regionInterest} />
+            <YouTubeSection
+                topics={youtubeTopics}
+                sentiment={sentimentBreakdown}
+            />
+            <Methodology />
+        </main>
+
+        <Footer lastUpdated={notebookSummary.lastCollected} />
+    </body>
+</html>

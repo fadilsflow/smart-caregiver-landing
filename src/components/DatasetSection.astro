@@ -1,0 +1,39 @@
+---
+import type { DatasetDistribution } from '../lib/types';
+
+export interface Props {
+  distribution: DatasetDistribution[];
+}
+
+const { distribution } = Astro.props;
+const maxCount = Math.max(...distribution.map((d) => d.count));
+---
+
+<section id="dataset" class="section-block">
+  <div class="section-title">
+    <h2>Overview Dataset</h2>
+  </div>
+  <p class="section-copy">
+    Dashboard ini menggabungkan data dari tiga sumber: WHO (indikator kesehatan formal),
+    YouTube (engagement dan sentimen video), dan Google Trends (minat pencarian publik).
+  </p>
+
+  <div class="panel">
+    <h3>Distribusi Sumber Data</h3>
+    <p class="muted">Jumlah record per sumber — menunjukkan komposisi dataset.</p>
+
+    <div class="bar-list" role="list" aria-label="Jumlah record per sumber">
+      {distribution.map((item) => (
+        <div class="bar-row" role="listitem">
+          <div class="bar-meta">
+            <span>{item.source}</span>
+            <strong>{item.count.toLocaleString('id-ID')} record</strong>
+          </div>
+          <div class="bar-track" aria-hidden="true">
+            <span style={`width: ${(item.count / maxCount) * 100}%`} />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
