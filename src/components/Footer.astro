@@ -8,23 +8,118 @@ const { lastUpdated } = Astro.props;
 
 <footer class="footer">
   <div class="footer-inner">
-    <p>LansiaData · Capstone Project</p>
-    <p>Data: WHO GHO API, Google Trends, YouTube Data API v3</p>
-    <p>Collection terakhir: {lastUpdated}</p>
+    <div class="footer-brand">
+      <strong>Smart Caregiver</strong>
+      <p>Dashboard data kesehatan lansia Indonesia — proyek akademik untuk memahami isu usia emas lewat data publik.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <span class="footer-heading">Data</span>
+        <a href="/public-dashboard">Dashboard</a>
+        <a href="#data-sources">Sumber Data</a>
+        <a href="/public-dashboard#metodologi">Metodologi</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-heading">Sumber</span>
+        <span class="footer-text">WHO GHO API</span>
+        <span class="footer-text">Google Trends</span>
+        <span class="footer-text">YouTube Data API v3</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <p>Smart Caregiver · Capstone Project · Koleksi terakhir: {lastUpdated}</p>
   </div>
 </footer>
 
 <style>
   .footer {
-    padding: var(--space-xxl) 0;
+    width: 100vw;
+    margin: 0 calc(50% - 50vw);
+    background: var(--ink);
+    color: var(--on-dark);
+    padding: var(--space-xxxl) var(--content-padding) 0;
   }
 
   .footer-inner {
-    width: min(var(--content-max), calc(100% - var(--content-padding) * 2));
+    width: min(1280px, 100%);
     margin: 0 auto;
     display: grid;
-    gap: 4px;
-    color: var(--muted);
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-xxl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-brand strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--on-dark);
+  }
+
+  .footer-brand p {
     font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--on-dark-soft);
+    max-width: 400px;
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+
+  .footer-col {
+    display: grid;
+    gap: 8px;
+  }
+
+  .footer-heading {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--on-dark-soft);
+    margin-bottom: 4px;
+  }
+
+  .footer-col a,
+  .footer-text {
+    font-size: 0.88rem;
+    color: var(--on-dark-soft);
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+  }
+
+  .footer-col a:hover {
+    opacity: 1;
+  }
+
+  .footer-legal {
+    width: min(1280px, 100%);
+    margin: 0 auto;
+    padding: var(--space-base) 0;
+    text-align: center;
+  }
+
+  .footer-legal p {
+    font-size: 0.8rem;
+    color: var(--on-dark-soft);
+    opacity: 0.5;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .footer-links {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>

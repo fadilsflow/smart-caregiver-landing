@@ -1,5 +1,5 @@
 ---
-// Top navigation — Coinbase-inspired light nav
+// Top navigation — MiniMax-inspired
 ---
 
 <header class="top-nav">
@@ -18,7 +18,7 @@
 <style>
   .top-nav {
     height: 64px;
-    border-bottom: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline-soft);
     background: var(--canvas);
   }
 
@@ -27,13 +27,13 @@
     align-items: center;
     justify-content: space-between;
     height: 100%;
-    width: min(var(--content-max), calc(100% - var(--content-padding) * 2));
+    width: min(1280px, calc(100% - var(--content-padding) * 2));
     margin: 0 auto;
   }
 
   .brand {
     font-weight: 700;
-    color: var(--blue);
+    color: var(--ink);
     font-size: 14px;
     letter-spacing: -0.02em;
   }
@@ -46,7 +46,7 @@
   .nav-links a {
     font-size: 14px;
     font-weight: 500;
-    color: var(--body);
+    color: var(--charcoal);
     transition: color 0.15s;
   }
 
