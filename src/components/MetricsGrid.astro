@@ -37,6 +37,41 @@ const metrics = [
   </div>
 </section>
 
+<script>
+  const valueEls = document.querySelectorAll<HTMLElement>(
+    '#ringkasan .metric-value:not(.text-value)',
+  );
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        animate(entry.target as HTMLElement);
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.4 },
+  );
+
+  valueEls.forEach((el) => observer.observe(el));
+
+  function animate(el: HTMLElement) {
+    const target = Number(el.textContent?.replace(/[^\d]/g, '') ?? '0');
+    if (!target) return;
+    const duration = 900;
+    const start = performance.now();
+
+    function step(now: number) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * eased).toLocaleString('id-ID');
+      if (progress < 1) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  }
+</script>
+
 <style>
   .metrics-grid {
     display: grid;

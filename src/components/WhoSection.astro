@@ -11,14 +11,13 @@ const min = Math.min(...allValues);
 const max = Math.max(...allValues);
 const colors = ['var(--blue)', 'var(--teal)', 'var(--green)', 'var(--orange)'];
 
-function polyline(values: { value: number }[], min: number, max: number) {
-  return values
-    .map((point, i) => {
-      const x = 44 + (i / (values.length - 1)) * 500;
-      const y = 220 - ((point.value - min) / (max - min)) * 170;
-      return `${x},${y}`;
-    })
-    .join(' ');
+function seriesPoints(values: { year: number; value: number }[], min: number, max: number) {
+  return values.map((point, i) => ({
+    x: 44 + (i / (values.length - 1)) * 500,
+    y: 220 - ((point.value - min) / (max - min)) * 170,
+    year: point.year,
+    value: point.value,
+  }));
 }
 ---
 
@@ -46,16 +45,32 @@ function polyline(values: { value: number }[], min: number, max: number) {
       <line x1="44" y1="220" x2="560" y2="220" class="axis" />
       <line x1="44" y1="40" x2="44" y2="220" class="axis" />
 
-      {indicators.map((indicator, index) => (
-        <polyline
-          points={polyline(indicator.values, min, max)}
-          fill="none"
-          stroke={colors[index]}
-          stroke-width="3"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      ))}
+      {indicators.map((indicator, index) => {
+        const pts = seriesPoints(indicator.values, min, max);
+        return (
+          <g class="chart-series" data-key={indicator.code}>
+            <polyline
+              points={pts.map((p) => `${p.x},${p.y}`).join(' ')}
+              fill="none"
+              stroke={colors[index]}
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            {pts.map((p) => (
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r="4"
+                fill={colors[index]}
+                class="chart-point"
+                data-label={`${indicator.keyword} · ${p.year}`}
+                data-value={`${p.value}${indicator.unit}`}
+              />
+            ))}
+          </g>
+        );
+      })}
 
       {indicators[0].values.map((point, i) => (
         <text
@@ -69,14 +84,51 @@ function polyline(values: { value: number }[], min: number, max: number) {
       ))}
     </svg>
 
+    <div class="chart-tooltip" hidden></div>
+
     <div class="legend-grid">
       {indicators.map((indicator, index) => (
-        <div class="legend-item">
+        <button type="button" class="legend-item" data-key={indicator.code}>
           <span class="swatch" style={`background: ${colors[index]}`} />
           <strong>{indicator.keyword}</strong>
           <small>{indicator.meaning}</small>
-        </div>
+        </button>
       ))}
     </div>
   </div>
 </section>
+
+<script>
+  const panel = document.querySelector('#tren .scroll-panel');
+  const tooltip = panel?.querySelector<HTMLElement>('.chart-tooltip');
+
+  panel?.querySelectorAll<SVGCircleElement>('.chart-point').forEach((point) => {
+    point.addEventListener('mouseenter', () => showTooltip(point));
+    point.addEventListener('mouseleave', hideTooltip);
+  });
+
+  function showTooltip(point: SVGCircleElement) {
+    if (!tooltip || !panel) return;
+    const label = point.getAttribute('data-label');
+    const value = point.getAttribute('data-value');
+    tooltip.innerHTML = `<strong>${value}</strong><span>${label}</span>`;
+    const pointRect = point.getBoundingClientRect();
+    const panelRect = panel.getBoundingClientRect();
+    tooltip.style.left = `${pointRect.left - panelRect.left + panel.scrollLeft + pointRect.width / 2}px`;
+    tooltip.style.top = `${pointRect.top - panelRect.top}px`;
+    tooltip.hidden = false;
+  }
+
+  function hideTooltip() {
+    if (tooltip) tooltip.hidden = true;
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('#tren .legend-item').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-key');
+      const series = document.querySelector<SVGGElement>(`#tren .chart-series[data-key="${key}"]`);
+      const hidden = btn.classList.toggle('is-hidden');
+      if (series) series.style.opacity = hidden ? '0.08' : '1';
+    });
+  });
+</script>

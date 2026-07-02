@@ -44,6 +44,8 @@
   }
 
   .nav-links a {
+    position: relative;
+    padding-bottom: 4px;
     font-size: 14px;
     font-weight: 500;
     color: var(--charcoal);
@@ -54,9 +56,52 @@
     color: var(--ink);
   }
 
+  .nav-links a.active {
+    color: var(--ink);
+  }
+
+  .nav-links a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: var(--blue);
+    border-radius: var(--radius-pill);
+  }
+
   @media (max-width: 640px) {
     .nav-links {
       display: none;
     }
   }
 </style>
+
+<script>
+  const links = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(".nav-links a"),
+  );
+  const sections = links
+    .map((link) => document.querySelector(link.getAttribute("href") ?? ""))
+    .filter((el): el is Element => el !== null);
+
+  if (sections.length) {
+    const setActive = (id: string) => {
+      links.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: 0 },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>

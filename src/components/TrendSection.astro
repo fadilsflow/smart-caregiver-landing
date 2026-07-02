@@ -16,15 +16,13 @@ const trendConfig = [
   { key: 'posyandu', label: 'posyandu lansia', color: 'var(--orange)' },
 ] as const;
 
-function polyline(key: string) {
-  return series
-    .map((point, i) => {
-      const x = 44 + (i / (series.length - 1)) * 500;
-      const val = Number(point[key]) || 0;
-      const y = 220 - ((val - 10) / 85) * 170;
-      return `${x},${y}`;
-    })
-    .join(' ');
+function seriesPoints(key: string) {
+  return series.map((point, i) => {
+    const x = 44 + (i / (series.length - 1)) * 500;
+    const val = Number(point[key]) || 0;
+    const y = 220 - ((val - 10) / 85) * 170;
+    return { x, y, value: val, month: point.month };
+  });
 }
 ---
 
@@ -54,16 +52,32 @@ function polyline(key: string) {
         <line x1="44" y1="220" x2="560" y2="220" class="axis" />
         <line x1="44" y1="40" x2="44" y2="220" class="axis" />
 
-        {trendConfig.map((item) => (
-          <polyline
-            points={polyline(item.key)}
-            fill="none"
-            stroke={item.color}
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        ))}
+        {trendConfig.map((item) => {
+          const pts = seriesPoints(item.key);
+          return (
+            <g class="chart-series" data-key={item.key}>
+              <polyline
+                points={pts.map((p) => `${p.x},${p.y}`).join(' ')}
+                fill="none"
+                stroke={item.color}
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              {pts.map((p) => (
+                <circle
+                  cx={p.x}
+                  cy={p.y}
+                  r="4"
+                  fill={item.color}
+                  class="chart-point"
+                  data-label={`${item.label} · ${p.month}`}
+                  data-value={String(p.value)}
+                />
+              ))}
+            </g>
+          );
+        })}
 
         {series.map((point, i) => (
           <text
@@ -77,12 +91,14 @@ function polyline(key: string) {
         ))}
       </svg>
 
+      <div class="chart-tooltip" hidden></div>
+
       <div class="legend-inline">
         {trendConfig.map((item) => (
-          <span>
+          <button type="button" data-key={item.key}>
             <i style={`background: ${item.color}`} />
             {item.label}
-          </span>
+          </button>
         ))}
       </div>
     </div>
@@ -105,3 +121,38 @@ function polyline(key: string) {
     </div>
   </div>
 </section>
+
+<script>
+  const panel = document.querySelector('#publik .scroll-panel');
+  const tooltip = panel?.querySelector<HTMLElement>('.chart-tooltip');
+
+  panel?.querySelectorAll<SVGCircleElement>('.chart-point').forEach((point) => {
+    point.addEventListener('mouseenter', () => showTooltip(point));
+    point.addEventListener('mouseleave', hideTooltip);
+  });
+
+  function showTooltip(point: SVGCircleElement) {
+    if (!tooltip || !panel) return;
+    const label = point.getAttribute('data-label');
+    const value = point.getAttribute('data-value');
+    tooltip.innerHTML = `<strong>${value}</strong><span>${label}</span>`;
+    const pointRect = point.getBoundingClientRect();
+    const panelRect = panel.getBoundingClientRect();
+    tooltip.style.left = `${pointRect.left - panelRect.left + panel.scrollLeft + pointRect.width / 2}px`;
+    tooltip.style.top = `${pointRect.top - panelRect.top}px`;
+    tooltip.hidden = false;
+  }
+
+  function hideTooltip() {
+    if (tooltip) tooltip.hidden = true;
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('#publik .legend-inline button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-key');
+      const series = document.querySelector<SVGGElement>(`#publik .chart-series[data-key="${key}"]`);
+      const hidden = btn.classList.toggle('is-hidden');
+      if (series) series.style.opacity = hidden ? '0.08' : '1';
+    });
+  });
+</script>

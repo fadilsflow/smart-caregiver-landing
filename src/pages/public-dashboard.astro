@@ -66,5 +66,21 @@ import {
         </main>
 
         <Footer lastUpdated={notebookSummary.lastCollected} />
+
+        <script>
+            const panels = document.querySelectorAll(".panel");
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("revealed");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                { threshold: 0.2 },
+            );
+            panels.forEach((panel) => observer.observe(panel));
+        </script>
     </body>
 </html>

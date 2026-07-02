@@ -29,19 +29,23 @@ function formatNumber(n: number): string {
   <div class="two-panels">
     <div class="panel">
       <h3>Sentimen</h3>
+      <p class="muted">Klik salah satu segmen untuk memfilter topik di kanan.</p>
       <div class="sentiment-stack" aria-label="Breakdown sentimen YouTube">
         {sentiment.map((item) => (
-          <span
+          <button
+            type="button"
             class={item.sentiment}
+            data-sentiment={item.sentiment}
             style={`width: ${item.value}%`}
             title={`${item.label} ${item.value}%`}
+            aria-label={`Filter topik sentimen ${item.label}`}
           />
         ))}
       </div>
 
       <div class="simple-list">
         {sentiment.map((item) => (
-          <p>
+          <p data-sentiment={item.sentiment}>
             <strong>{item.value}% {item.label}</strong><br />
             <span>{item.description}</span>
           </p>
@@ -53,7 +57,7 @@ function formatNumber(n: number): string {
       <h3>Top Engagement</h3>
       <div class="topic-table" role="list" aria-label="Topik YouTube engagement tinggi">
         {topics.map((topic) => (
-          <article role="listitem">
+          <article role="listitem" data-sentiment={topic.sentiment}>
             <div>
               <strong>{topic.title}</strong>
               <span>{topic.keyword} · {topic.sentiment}</span>
@@ -68,3 +72,32 @@ function formatNumber(n: number): string {
     </div>
   </div>
 </section>
+
+<script>
+  const stack = document.querySelector<HTMLElement>('#youtube .sentiment-stack');
+  const list = document.querySelector<HTMLElement>('#youtube .simple-list');
+  const table = document.querySelector<HTMLElement>('#youtube .topic-table');
+  let active: string | null = null;
+
+  stack?.querySelectorAll<HTMLButtonElement>('button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const sentiment = btn.getAttribute('data-sentiment');
+      active = active === sentiment ? null : sentiment;
+
+      stack.classList.toggle('has-active', Boolean(active));
+      stack.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+        b.classList.toggle('is-active', b.getAttribute('data-sentiment') === active);
+      });
+
+      list?.classList.toggle('has-active', Boolean(active));
+      list?.querySelectorAll<HTMLElement>('p').forEach((p) => {
+        p.classList.toggle('is-active', p.getAttribute('data-sentiment') === active);
+      });
+
+      table?.classList.toggle('has-filter', Boolean(active));
+      table?.querySelectorAll<HTMLElement>('article').forEach((article) => {
+        article.classList.toggle('is-match', article.getAttribute('data-sentiment') === active);
+      });
+    });
+  });
+</script>

@@ -282,7 +282,9 @@ p {
   height: 100%;
   background: var(--blue);
   border-radius: var(--radius-pill);
-  transition: width 0.3s ease;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
 }
 
 .mini-track {
@@ -298,6 +300,27 @@ p {
   height: 100%;
   background: var(--blue);
   border-radius: var(--radius-pill);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+}
+
+.panel.revealed .bar-track span,
+.panel.revealed .mini-track span,
+.panel.revealed .sentiment-stack button {
+  transform: scaleX(1);
+}
+
+.bar-row:hover .bar-track span,
+.region-row:hover .mini-track span,
+.topic-table article:hover .mini-track span {
+  filter: brightness(1.15);
+}
+
+.bar-row:hover strong,
+.region-row:hover b,
+.topic-table article:hover b {
+  color: var(--blue);
 }
 
 /* === SVG Charts === */
@@ -319,7 +342,58 @@ p {
   font-family: var(--font-mono);
 }
 
-/* === Legends === */
+.chart-series {
+  transition: opacity 0.2s ease;
+}
+
+.chart-point {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.15s ease;
+}
+
+.chart-point:hover,
+.chart-point:focus-visible {
+  transform: scale(1.6);
+}
+
+/* === Chart tooltip === */
+.scroll-panel {
+  position: relative;
+}
+
+.chart-tooltip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  margin-top: -10px;
+  display: grid;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--ink);
+  color: var(--on-dark);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.chart-tooltip[hidden] {
+  display: none;
+}
+
+.chart-tooltip strong {
+  color: var(--on-dark);
+  font-family: var(--font-mono);
+}
+
+.chart-tooltip span {
+  color: var(--on-dark-soft);
+}
+
+/* === Legends (interactive toggles) === */
 .legend-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -333,6 +407,23 @@ p {
   grid-template-columns: 10px 1fr;
   gap: 10px;
   align-items: start;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.legend-item:hover {
+  opacity: 0.75;
+}
+
+.legend-item.is-hidden {
+  opacity: 0.35;
 }
 
 .legend-item .swatch {
@@ -351,16 +442,32 @@ p {
 .legend-inline {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 8px;
   margin-top: var(--space-sm);
   color: var(--charcoal);
   font-size: 0.9rem;
 }
 
-.legend-inline span {
+.legend-inline button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  padding: 4px 10px 4px 6px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.2s ease;
+}
+
+.legend-inline button:hover {
+  background: var(--surface-soft);
+}
+
+.legend-inline button.is-hidden {
+  opacity: 0.35;
 }
 
 .legend-inline i {
@@ -408,6 +515,29 @@ p {
   overflow: hidden;
 }
 
+.sentiment-stack button {
+  display: block;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease,
+    filter 0.15s ease;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.sentiment-stack.has-active button:not(.is-active) {
+  opacity: 0.3;
+}
+
+.sentiment-stack button:hover,
+.sentiment-stack button.is-active {
+  filter: brightness(1.12);
+}
+
 .sentiment-stack .positive {
   background: var(--semantic-up);
 }
@@ -421,6 +551,22 @@ p {
 .simple-list {
   display: grid;
   gap: var(--space-sm);
+}
+
+.simple-list p {
+  cursor: default;
+  padding: 6px 8px;
+  margin: -6px -8px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.simple-list.has-active p:not(.is-active) {
+  opacity: 0.45;
+}
+
+.simple-list p.is-active {
+  background: var(--blue-soft);
 }
 
 .simple-list strong {
@@ -440,6 +586,11 @@ p {
   gap: 8px 14px;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--hairline);
+  transition: opacity 0.2s ease;
+}
+
+.topic-table.has-filter article:not(.is-match) {
+  opacity: 0.3;
 }
 
 .topic-table article:last-child {
