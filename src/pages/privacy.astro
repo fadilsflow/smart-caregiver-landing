@@ -1,0 +1,247 @@
+---
+import "../styles/global.css";
+
+const sections = [
+  ["data", "Data yang dikumpulkan"],
+  ["use", "Penggunaan data"],
+  ["sharing", "Pembagian data"],
+  ["security", "Keamanan & retensi"],
+  ["rights", "Hak & penghapusan"],
+  ["children", "Privasi anak"],
+  ["changes", "Perubahan kebijakan"],
+  ["contact", "Hubungi kami"],
+];
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Kebijakan Privasi Smart Caregiver—informasi tentang data yang dikumpulkan, digunakan, dilindungi, dan cara meminta penghapusan akun."
+    />
+    <meta name="robots" content="index, follow" />
+    <title>Kebijakan Privasi — Smart Caregiver</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="privacy-nav">
+      <div class="nav-inner">
+        <a class="brand" href="/" aria-label="Smart Caregiver, kembali ke beranda">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.7-7.5 1.1-1.1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/><path d="M7.5 12h2l1-2.5 2.2 5 1.2-2.5h2.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>SMARTCAREGIVER</span>
+        </a>
+        <a class="nav-contact" href="mailto:wahyufadil1140@gmail.com">Kontak <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-shape shape-one" aria-hidden="true"></div>
+        <div class="hero-shape shape-two" aria-hidden="true"></div>
+        <div class="hero-inner">
+          <span class="eyebrow"><span class="status-dot"></span> Privasi Anda penting</span>
+          <h1>Kebijakan<br /><em>Privasi.</em></h1>
+          <p>
+            Smart Caregiver membantu caregiver memantau dan mendampingi kesehatan lansia.
+            Berikut penjelasan tentang data yang kami kelola dan kendali yang Anda miliki.
+          </p>
+          <div class="meta"><span>Berlaku sejak 13 Juli 2026</span><span>Versi 1.0</span></div>
+        </div>
+      </section>
+
+      <div class="policy-layout">
+        <aside class="toc" aria-label="Daftar isi">
+          <span>Di halaman ini</span>
+          <nav>
+            {sections.map(([id, label], index) => (
+              <a href={`#${id}`}><small>{String(index + 1).padStart(2, "0")}</small>{label}</a>
+            ))}
+          </nav>
+        </aside>
+
+        <article class="policy">
+          <div class="summary">
+            <span class="summary-icon" aria-hidden="true">✓</span>
+            <div>
+              <strong>Ringkasnya</strong>
+              <p>Kami menggunakan data hanya untuk menjalankan dan meningkatkan Smart Caregiver. Kami tidak menjual data pribadi atau kesehatan dan tidak menggunakannya untuk iklan bertarget.</p>
+            </div>
+          </div>
+
+          <section id="data" class="policy-section">
+            <header><span>01</span><div><small>Informasi</small><h2>Data yang kami kumpulkan</h2></div></header>
+            <p>Data diberikan oleh caregiver saat menggunakan aplikasi. Jenis data yang dapat kami proses meliputi:</p>
+            <div class="data-grid">
+              <article><span class="card-number">A</span><h3>Data akun</h3><p>Nama, alamat email, nomor telepon opsional, foto profil, dan informasi autentikasi.</p></article>
+              <article><span class="card-number">B</span><h3>Profil lansia</h3><p>Nama, usia, jenis kelamin, foto, kondisi fisik, mobilitas, alergi, riwayat medis, minat, dan kontak darurat.</p></article>
+              <article><span class="card-number">C</span><h3>Catatan kesehatan</h3><p>Tanda vital, berat badan, gula darah, kolesterol, asam urat, saturasi oksigen, keluhan, dan catatan harian.</p></article>
+              <article><span class="card-number">D</span><h3>Data penggunaan</h3><p>Jadwal, pengingat, preferensi notifikasi, token perangkat, serta waktu pembuatan dan pembaruan data.</p></article>
+            </div>
+            <p>Jika Anda memasukkan data orang lain, termasuk lansia atau kontak darurat, Anda menyatakan bahwa Anda memiliki izin yang sesuai untuk memberikan dan mengelola data tersebut.</p>
+          </section>
+
+          <section id="use" class="policy-section">
+            <header><span>02</span><div><small>Tujuan</small><h2>Cara kami menggunakan data</h2></div></header>
+            <ul>
+              <li>Membuat dan mengamankan akun caregiver.</li>
+              <li>Menyimpan profil lansia, catatan kesehatan, jadwal, dan riwayat perawatan.</li>
+              <li>Menganalisis parameter kesehatan untuk menampilkan status, tren, dan peringatan.</li>
+              <li>Mengirim pengingat jadwal, ringkasan, dan notifikasi kondisi yang memerlukan perhatian.</li>
+              <li>Membuat rekomendasi aktivitas berbantuan AI berdasarkan profil yang dipilih pengguna.</li>
+              <li>Menjaga keamanan, menangani gangguan, dan meningkatkan layanan.</li>
+            </ul>
+            <div class="notice"><strong>Bukan layanan medis.</strong> Smart Caregiver adalah alat bantu pemantauan dan tidak menggantikan diagnosis, saran, atau penanganan tenaga kesehatan profesional.</div>
+          </section>
+
+          <section id="sharing" class="policy-section">
+            <header><span>03</span><div><small>Pihak ketiga</small><h2>Pembagian data</h2></div></header>
+            <p>Kami tidak menjual atau menyewakan data pribadi. Data hanya dapat diproses oleh penyedia layanan yang diperlukan untuk menjalankan fitur aplikasi:</p>
+            <div class="providers">
+              <div><strong>Google Firebase</strong><span>Pengiriman notifikasi push dan layanan pendukung aplikasi.</span></div>
+              <div><strong>Penyedia layanan AI</strong><span>Memproses bagian profil lansia yang relevan untuk menghasilkan rekomendasi aktivitas.</span></div>
+              <div><strong>Infrastruktur cloud</strong><span>Penyimpanan basis data, hosting, autentikasi, dan pengiriman email layanan.</span></div>
+            </div>
+            <p>Penyedia tersebut hanya menerima data yang diperlukan untuk tugasnya dan terikat oleh ketentuan perlindungan data masing-masing. Kami juga dapat mengungkapkan data jika diwajibkan oleh hukum atau diperlukan untuk melindungi keselamatan dan hak pengguna.</p>
+          </section>
+
+          <section id="security" class="policy-section">
+            <header><span>04</span><div><small>Perlindungan</small><h2>Keamanan & penyimpanan</h2></div></header>
+            <p>Kami menerapkan langkah teknis dan organisasi yang wajar, termasuk autentikasi, pembatasan akses berdasarkan kepemilikan akun, enkripsi komunikasi, dan penyimpanan kata sandi dalam bentuk hash. Namun, tidak ada metode transmisi atau penyimpanan elektronik yang sepenuhnya bebas risiko.</p>
+            <p>Data disimpan selama akun aktif atau selama diperlukan untuk menyediakan layanan. Setelah penghapusan diminta, data akan dihapus atau dianonimkan dalam waktu paling lama 30 hari, kecuali penyimpanan lebih lama diwajibkan untuk keamanan, penyelesaian sengketa, pencadangan sementara, atau kewajiban hukum.</p>
+          </section>
+
+          <section id="rights" class="policy-section">
+            <header><span>05</span><div><small>Kendali Anda</small><h2>Hak & penghapusan data</h2></div></header>
+            <p>Anda dapat meminta salinan, koreksi, atau penghapusan data pribadi dan akun. Kirim email dari alamat yang terdaftar dengan subjek <strong>“Permintaan Penghapusan Akun Smart Caregiver”</strong>. Kami dapat meminta verifikasi tambahan untuk mencegah akses atau penghapusan tanpa izin.</p>
+            <a class="delete-card" href="mailto:wahyufadil1140@gmail.com?subject=Permintaan%20Penghapusan%20Akun%20Smart%20Caregiver">
+              <span class="delete-icon" aria-hidden="true">×</span>
+              <span><strong>Ajukan penghapusan akun</strong><small>wahyufadil1140@gmail.com</small></span>
+              <b aria-hidden="true">↗</b>
+            </a>
+          </section>
+
+          <section id="children" class="policy-section">
+            <header><span>06</span><div><small>Batas usia</small><h2>Privasi anak</h2></div></header>
+            <p>Smart Caregiver ditujukan untuk caregiver dewasa dan tidak ditujukan kepada anak di bawah usia 13 tahun. Kami tidak dengan sengaja mengumpulkan data pribadi anak. Hubungi kami jika Anda yakin seorang anak telah memberikan data tanpa persetujuan yang sesuai.</p>
+          </section>
+
+          <section id="changes" class="policy-section">
+            <header><span>07</span><div><small>Pembaruan</small><h2>Perubahan kebijakan</h2></div></header>
+            <p>Kebijakan ini dapat diperbarui untuk mencerminkan perubahan fitur, praktik, atau ketentuan hukum. Versi terbaru akan selalu tersedia di halaman ini dengan tanggal berlaku yang diperbarui. Untuk perubahan material, kami dapat memberikan pemberitahuan tambahan melalui aplikasi.</p>
+          </section>
+
+          <section id="contact" class="policy-section contact-section">
+            <header><span>08</span><div><small>Pertanyaan</small><h2>Hubungi kami</h2></div></header>
+            <p>Untuk pertanyaan atau permintaan terkait privasi, silakan hubungi pengembang Smart Caregiver.</p>
+            <a href="mailto:wahyufadil1140@gmail.com">wahyufadil1140@gmail.com <span aria-hidden="true">↗</span></a>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true">♥</span><span>SMARTCAREGIVER</span></a>
+        <p>Merawat dengan aman, mendampingi dengan tenang.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .privacy-nav { height: 72px; border-bottom: 1px solid var(--hairline-soft); background: rgba(255,255,255,.92); position: relative; z-index: 5; }
+  .nav-inner, .footer-inner { width: min(1180px, calc(100% - 64px)); height: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 13px; font-weight: 700; letter-spacing: -.02em; }
+  .brand-mark { width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 11px; background: var(--ink); color: white; }
+  .brand-mark svg { width: 19px; height: 19px; }
+  .nav-contact { font-size: 14px; font-weight: 600; padding: 9px 16px; border: 1px solid var(--hairline); border-radius: var(--radius-pill); transition: border-color .15s, background .15s; }
+  .nav-contact:hover { border-color: var(--ink); background: var(--surface); }
+  .hero { min-height: 570px; position: relative; overflow: hidden; display: grid; align-items: center; border-bottom: 1px solid var(--hairline); }
+  .hero-grid { position: absolute; inset: 0; opacity: .42; background-image: linear-gradient(var(--hairline-soft) 1px, transparent 1px), linear-gradient(90deg, var(--hairline-soft) 1px, transparent 1px); background-size: 40px 40px; mask-image: linear-gradient(to bottom, black 25%, transparent 90%); }
+  .hero-inner { width: min(1000px, calc(100% - 64px)); margin: 0 auto; padding: 78px 0 88px; text-align: center; position: relative; z-index: 2; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border: 1px solid var(--hairline); border-radius: var(--radius-pill); background: rgba(255,255,255,.78); font-size: 12px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--brand-green); box-shadow: 0 0 0 4px rgba(5,150,105,.12); }
+  .hero h1 { margin: 30px 0 24px; font-size: clamp(4rem, 9vw, 7.5rem); line-height: .83; letter-spacing: -.075em; }
+  .hero h1 em { color: var(--brand-blue); font-style: normal; }
+  .hero p { max-width: 720px; margin: 0 auto; color: var(--charcoal); font-size: clamp(1rem, 1.7vw, 1.2rem); line-height: 1.7; }
+  .meta { display: flex; justify-content: center; gap: 12px; margin-top: 28px; color: var(--slate); font-size: 12px; }
+  .meta span + span::before { content: "·"; margin-right: 12px; }
+  .hero-shape { position: absolute; border-radius: 50%; filter: blur(2px); }
+  .shape-one { width: 260px; height: 260px; left: -100px; top: 100px; background: rgba(34,211,238,.14); }
+  .shape-two { width: 220px; height: 220px; right: -70px; bottom: -20px; background: rgba(244,72,55,.12); }
+  .policy-layout { width: min(1040px, calc(100% - 64px)); margin: 0 auto; padding: 88px 0 120px; display: grid; grid-template-columns: 220px minmax(0, 720px); gap: 92px; }
+  .toc { position: sticky; top: 28px; align-self: start; }
+  .toc > span { display: block; margin-bottom: 16px; color: var(--steel); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+  .toc nav { display: grid; border-left: 1px solid var(--hairline); }
+  .toc a { padding: 8px 0 8px 16px; color: var(--slate); font-size: 13px; transition: color .15s, transform .15s; }
+  .toc a:hover { color: var(--brand-blue); transform: translateX(3px); }
+  .toc small { display: inline-block; width: 26px; color: var(--stone); font: 10px var(--font-mono); }
+  .summary { display: flex; gap: 18px; padding: 26px; margin-bottom: 72px; border-radius: var(--radius-xxl); background: var(--ink); color: white; box-shadow: 0 24px 60px rgba(10,11,13,.13); }
+  .summary-icon { flex: 0 0 auto; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--brand-green); font-weight: 700; }
+  .summary strong { display: block; margin-bottom: 7px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  .summary p { color: var(--on-dark-soft); font-size: 14px; line-height: 1.7; }
+  .policy-section { scroll-margin-top: 28px; padding-bottom: 72px; margin-bottom: 72px; border-bottom: 1px solid var(--hairline); }
+  .policy-section > header { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 28px; }
+  .policy-section > header > span { padding-top: 7px; color: var(--brand-blue); font: 11px var(--font-mono); }
+  .policy-section header small { display: block; margin-bottom: 5px; color: var(--steel); font-size: 10px; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }
+  .policy-section h2 { font-size: clamp(1.7rem, 3.4vw, 2.45rem); letter-spacing: -.035em; }
+  .policy-section > p, .policy-section li { color: var(--charcoal); font-size: 16px; line-height: 1.8; }
+  .policy-section > p + p { margin-top: 18px; }
+  .policy-section ul { display: grid; gap: 11px; margin: 26px 0; list-style: none; }
+  .policy-section li { position: relative; padding-left: 25px; }
+  .policy-section li::before { content: ""; width: 9px; height: 9px; position: absolute; left: 0; top: 10px; border-radius: 50%; border: 3px solid var(--blue-soft); background: var(--brand-blue); }
+  .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 28px 0; }
+  .data-grid article { min-height: 210px; padding: 22px; border: 1px solid var(--hairline); border-radius: var(--radius-xl); transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .data-grid article:hover { transform: translateY(-3px); border-color: #bdcaf2; box-shadow: 0 16px 35px rgba(38,103,255,.08); }
+  .card-number { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--blue-soft); color: var(--brand-blue); font-size: 12px; font-weight: 700; }
+  .data-grid h3 { margin: 34px 0 8px; font-size: 17px; }
+  .data-grid p { color: var(--slate); font-size: 13px; line-height: 1.65; }
+  .notice { margin-top: 26px; padding: 18px 20px; border: 1px solid #f2d7a2; border-radius: var(--radius-lg); background: #fff9ed; color: #755421; font-size: 14px; line-height: 1.65; }
+  .providers { display: grid; gap: 1px; margin: 26px 0; border-radius: var(--radius-xl); overflow: hidden; }
+  .providers div { display: grid; grid-template-columns: 180px 1fr; gap: 18px; padding: 20px; background: var(--surface); }
+  .providers strong { color: var(--ink); font-size: 14px; }
+  .providers span { color: var(--slate); font-size: 13px; line-height: 1.55; }
+  .delete-card { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 15px; padding: 16px; margin-top: 26px; border: 1px solid var(--hairline); border-radius: var(--radius-xl); transition: border-color .15s, box-shadow .15s; }
+  .delete-card:hover { border-color: var(--brand-blue); box-shadow: 0 12px 28px rgba(38,103,255,.08); }
+  .delete-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: #fff0ef; color: var(--brand-coral); font-size: 24px; }
+  .delete-card > span:nth-child(2) { display: grid; }
+  .delete-card strong { color: var(--ink); font-size: 14px; }
+  .delete-card small { color: var(--slate); font-size: 12px; }
+  .delete-card b { color: var(--brand-blue); font-size: 18px; }
+  .contact-section { margin: 0; padding: 0; border: 0; }
+  .contact-section > a { display: inline-flex; gap: 8px; margin-top: 18px; color: var(--brand-blue); font-weight: 600; border-bottom: 1px solid currentColor; }
+  footer { height: 110px; background: var(--ink); color: white; }
+  .footer-brand { color: white; }
+  .footer-brand .brand-mark { background: white; color: var(--ink); }
+  .footer-inner p { color: var(--on-dark-soft); font-size: 13px; }
+  @media (max-width: 820px) {
+    .policy-layout { grid-template-columns: 1fr; gap: 0; }
+    .toc { display: none; }
+    .hero { min-height: 520px; }
+  }
+  @media (max-width: 560px) {
+    .nav-inner, .footer-inner, .hero-inner, .policy-layout { width: calc(100% - 40px); }
+    .hero-inner { padding: 62px 0 70px; }
+    .hero h1 { font-size: 4rem; }
+    .policy-layout { padding: 58px 0 86px; }
+    .data-grid { grid-template-columns: 1fr; }
+    .providers div { grid-template-columns: 1fr; gap: 5px; }
+    .footer-inner { align-items: flex-start; flex-direction: column; justify-content: center; gap: 8px; }
+    .nav-contact { padding: 8px 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
