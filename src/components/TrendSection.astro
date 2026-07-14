@@ -8,6 +8,7 @@ export interface Props {
 
 const { series, regions } = Astro.props;
 const maxRegionScore = Math.max(...regions.map((r) => r.score));
+const trendRange = series.length > 1 ? `${series[0].month} hingga ${series.at(-1)?.month}` : series[0]?.month;
 
 const trendConfig = [
   { key: 'lansia', label: 'lansia', color: 'var(--blue)' },
@@ -31,9 +32,8 @@ function seriesPoints(key: string) {
     <h2>Minat Publik</h2>
   </div>
   <p class="section-copy">
-    Google Trends menunjukkan minat pencarian publik terhadap topik lansia dari
-    Mei 2021 hingga Mei 2026. "Senam lansia" dan "lansia" menjadi keyword dengan
-    tren pertumbuhan paling konsisten.
+    Google Trends menunjukkan minat pencarian publik terhadap topik lansia untuk
+    periode {trendRange}. Nilai merupakan indeks minat relatif dari data terbaru.
   </p>
 
   <div class="two-panels">
@@ -47,7 +47,7 @@ function seriesPoints(key: string) {
       >
         <title id="trend-chart-title">Line chart Google Trends</title>
         <desc id="trend-chart-desc">
-          Lima keyword dari Mei 2021 sampai Mei 2026
+          Keyword terkait lansia pada periode {trendRange}
         </desc>
         <line x1="44" y1="220" x2="560" y2="220" class="axis" />
         <line x1="44" y1="40" x2="44" y2="220" class="axis" />

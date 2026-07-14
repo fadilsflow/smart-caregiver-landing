@@ -1,5 +1,24 @@
 # Astro Starter Kit: Minimal
 
+## Production data on Vercel
+
+The production build creates a validated static dashboard snapshot from MongoDB
+Atlas. Database access happens only in the Vercel build environment; visitors
+receive static HTML and assets.
+
+1. Create a MongoDB Atlas user with read-only access to `elderly_analysis`.
+2. Add `MONGO_URI` to Vercel Project Settings → Environment Variables for
+   Production (and Preview if desired).
+3. Create a Production Deploy Hook in Vercel Project Settings → Git → Deploy
+   Hooks.
+4. Add its URL to the `bigdata` GitHub repository as the Actions secret
+   `VERCEL_DEPLOY_HOOK_URL`.
+
+`bun run build` runs `scripts/generate-dashboard-data.mjs` before Astro. A
+production build fails when MongoDB is unavailable or the snapshot is incomplete,
+so Vercel keeps serving the previous valid deployment. Local builds without
+`MONGO_URI` use the committed development fixture.
+
 ```sh
 bun create astro@latest -- --template minimal
 ```

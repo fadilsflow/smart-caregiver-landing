@@ -1,5 +1,14 @@
 ---
 // Landing sections — Smart Caregiver app promotion
+import type { KeyMetrics } from '../lib/types';
+
+export interface Props {
+    keyMetrics: KeyMetrics;
+}
+
+const { keyMetrics } = Astro.props;
+const rangeYears = keyMetrics.timerange.match(/\d{4}/g);
+const displayRange = rangeYears?.length ? `${rangeYears[0]}–${rangeYears.at(-1)}` : keyMetrics.timerange;
 ---
 
 <section class="promo-flow" aria-label="Smart Caregiver landing sections">
@@ -112,15 +121,15 @@
             </div>
             <div class="cta-visual" aria-hidden="true">
                 <div class="cta-metric">
-                    <strong>3</strong>
+                    <strong>{keyMetrics.totalSources}</strong>
                     <span>Sumber data</span>
                 </div>
                 <div class="cta-metric">
-                    <strong>2.372</strong>
+                    <strong>{keyMetrics.totalRecords.toLocaleString('id-ID')}</strong>
                     <span>Record</span>
                 </div>
                 <div class="cta-metric">
-                    <strong>1980–2026</strong>
+                    <strong>{displayRange}</strong>
                     <span>Rentang waktu</span>
                 </div>
             </div>

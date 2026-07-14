@@ -1,11 +1,13 @@
 ---
-import type { KeyMetrics } from '../lib/types';
+import type { DatasetDistribution, KeyMetrics } from '../lib/types';
 
 export interface Props {
   keyMetrics: KeyMetrics;
+  distribution: DatasetDistribution[];
 }
 
-const { keyMetrics } = Astro.props;
+const { keyMetrics, distribution } = Astro.props;
+const largestSource = [...distribution].sort((a, b) => b.count - a.count)[0];
 
 const metrics = [
   { label: 'Total records', value: keyMetrics.totalRecords.toLocaleString('id-ID'), desc: 'Record gabungan 3 sumber' },
@@ -31,8 +33,8 @@ const metrics = [
   </div>
 
   <div class="insight-box">
-    <p><strong>Insight 1.</strong> Data paling banyak berasal dari YouTube: 1.722 dari 2.372 record — menunjukkan tingginya konten kesehatan lansia di platform video.</p>
-    <p><strong>Insight 2.</strong> Notebook menemukan 12 keyword unik lintas WHO, Google Trends, dan YouTube, dengan "perawatan lansia" sebagai topik paling dominan.</p>
+    <p><strong>Insight 1.</strong> Data paling banyak berasal dari {largestSource?.source ?? 'sumber utama'}: {largestSource?.count.toLocaleString('id-ID') ?? '0'} dari {keyMetrics.totalRecords.toLocaleString('id-ID')} record.</p>
+    <p><strong>Insight 2.</strong> Dataset menemukan {keyMetrics.uniqueKeywords} keyword unik, dengan "{keyMetrics.topKeyword}" sebagai topik paling sering muncul.</p>
     <p><strong>Insight 3.</strong> Dataset menggabungkan tiga dimensi: indikator kesehatan formal (WHO), minat pencarian publik (Google Trends), dan percakapan media digital (YouTube).</p>
   </div>
 </section>

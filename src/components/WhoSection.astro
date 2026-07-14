@@ -7,8 +7,11 @@ export interface Props {
 
 const { indicators } = Astro.props;
 const allValues = indicators.flatMap((i) => i.values.map((v) => v.value));
+const allYears = indicators.flatMap((i) => i.values.map((v) => v.year));
 const min = Math.min(...allValues);
 const max = Math.max(...allValues);
+const firstYear = Math.min(...allYears);
+const lastYear = Math.max(...allYears);
 const colors = ['var(--blue)', 'var(--teal)', 'var(--green)', 'var(--orange)'];
 
 function seriesPoints(values: { year: number; value: number }[], min: number, max: number) {
@@ -26,12 +29,12 @@ function seriesPoints(values: { year: number; value: number }[], min: number, ma
     <h2>Tren Kesehatan (WHO)</h2>
   </div>
   <p class="section-copy">
-    WHO menyediakan data historis 1980–2022 untuk empat indikator kesehatan yang
+    WHO menyediakan data historis {firstYear}–{lastYear} untuk {indicators.length} indikator kesehatan yang
     relevan dengan lansia di Indonesia: hipertensi, diabetes, obesitas, dan harapan hidup.
   </p>
 
   <div class="panel scroll-panel">
-    <h3>Indikator WHO 1980–2022</h3>
+    <h3>Indikator WHO {firstYear}–{lastYear}</h3>
     <svg
       class="line-chart"
       viewBox="0 0 600 280"

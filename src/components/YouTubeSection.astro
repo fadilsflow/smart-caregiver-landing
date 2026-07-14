@@ -4,9 +4,10 @@ import type { YouTubeTopic, SentimentBreakdown } from '../lib/types';
 export interface Props {
   topics: YouTubeTopic[];
   sentiment: SentimentBreakdown[];
+  recordCount: number;
 }
 
-const { topics, sentiment } = Astro.props;
+const { topics, sentiment, recordCount } = Astro.props;
 const maxEngagement = Math.max(...topics.map((t) => t.engagement));
 
 function formatNumber(n: number): string {
@@ -21,9 +22,9 @@ function formatNumber(n: number): string {
     <h2>Percakapan YouTube</h2>
   </div>
   <p class="section-copy">
-    YouTube menyumbang 1.722 record dari 8 keyword terkait lansia. Sebagian besar
-    video bersifat informatif netral, dengan engagement tertinggi pada konten
-    senam lansia dan perawatan harian.
+    Snapshot terbaru memuat {recordCount.toLocaleString('id-ID')} record YouTube.
+    Daftar berikut menampilkan video dengan engagement tertinggi serta distribusi
+    sentimen dari batch pengumpulan terbaru.
   </p>
 
   <div class="two-panels">

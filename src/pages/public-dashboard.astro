@@ -13,8 +13,11 @@ import Methodology from "../components/Methodology.astro";
 // Global design tokens
 import "../styles/global.css";
 
-// Data layer — swap to API client when SSR enabled
-import {
+import generatedDashboard from "../data/generated-dashboard";
+import type { DashboardSummary } from "../lib/types";
+
+const dashboard = generatedDashboard as unknown as DashboardSummary;
+const {
     keyMetrics,
     datasetDistribution,
     topicPopularity,
@@ -23,8 +26,9 @@ import {
     regionInterest,
     youtubeTopics,
     sentimentBreakdown,
-    notebookSummary,
-} from "../data/dummy-dashboard";
+    lastUpdated,
+} = dashboard;
+const youtubeRecordCount = datasetDistribution.find((item) => item.source === "YouTube")?.count ?? 0;
 ---
 
 <html lang="id">
@@ -53,7 +57,7 @@ import {
 
         <main class="page-container">
             <Hero keyMetrics={keyMetrics} />
-            <MetricsGrid keyMetrics={keyMetrics} />
+            <MetricsGrid keyMetrics={keyMetrics} distribution={datasetDistribution} />
             <DatasetSection distribution={datasetDistribution} />
             <TopicSection topics={topicPopularity} />
             <WhoSection indicators={whoIndicators} />
@@ -61,11 +65,12 @@ import {
             <YouTubeSection
                 topics={youtubeTopics}
                 sentiment={sentimentBreakdown}
+                recordCount={youtubeRecordCount}
             />
             <Methodology />
         </main>
 
-        <Footer lastUpdated={notebookSummary.lastCollected} />
+        <Footer lastUpdated={lastUpdated} />
 
         <script>
             const panels = document.querySelectorAll(".panel");

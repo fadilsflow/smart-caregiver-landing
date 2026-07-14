@@ -75,6 +75,10 @@ export interface SentimentBreakdown {
 }
 
 export interface DashboardSummary {
+  schemaVersion?: number;
+  generatedAt?: string | null;
+  batchId?: string;
+  freshness?: Partial<Record<Source, string>>;
   keyMetrics: KeyMetrics;
   datasetDistribution: DatasetDistribution[];
   whoIndicators: WhoIndicator[];

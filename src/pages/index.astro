@@ -1,7 +1,11 @@
 ---
 import LandingHero from "../components/LandingHero.astro";
 import LandingSections from "../components/LandingSections.astro";
+import generatedDashboard from "../data/generated-dashboard";
+import type { DashboardSummary } from "../lib/types";
 import "../styles/global.css";
+
+const dashboard = generatedDashboard as unknown as DashboardSummary;
 ---
 
 <html lang="id">
@@ -26,7 +30,7 @@ import "../styles/global.css";
     <body>
         <main>
             <LandingHero />
-            <LandingSections />
+            <LandingSections keyMetrics={dashboard.keyMetrics} />
         </main>
     </body>
 </html>
